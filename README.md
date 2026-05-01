@@ -6,3 +6,5 @@ BRONCE Founding Baker Acceso al canal exclusivo de Discord y agradecimiento en l
 PLATA Master Crafter Receta digital exclusiva + Voto en el siguiente sabor de la planta.
 ORO Legacy Partner Tu nombre grabado en la maquinaria industrial + NFT 1/1 único.
 0x45c6455aa01356609d96b659c6eb880b7e1d046d
+
+​[![](/assets/play_button.png) **Haz clic aquí para ver el video del proyecto**](https://github.com/csarielscontacto-commits/Csariel-s-Digital-Assets-/blob/main/watermark-2026-04-26-004512348.mp4)
