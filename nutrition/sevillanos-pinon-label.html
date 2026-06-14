@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etiqueta Nutrimental - Sevillanos de Piñón</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .label-container {
+            background-color: white;
+            border: 2px solid #000;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .product-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #d4a574;
+            text-shadow: 1px 1px 0 #000;
+            margin-bottom: 5px;
+        }
+        
+        .nutrition-facts {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 10px;
+        }
+        
+        .serving-info {
+            font-size: 12px;
+            line-height: 1.6;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .serving-info strong {
+            font-weight: bold;
+        }
+        
+        .nutrients-table {
+            width: 100%;
+            font-size: 13px;
+            margin-bottom: 15px;
+            border-collapse: collapse;
+        }
+        
+        .nutrients-table tr {
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .nutrients-table tr:first-child {
+            border-bottom: 2px solid #000;
+            font-weight: bold;
+        }
+        
+        .nutrients-table td {
+            padding: 8px 4px;
+        }
+        
+        .nutrients-table td:first-child {
+            text-align: left;
+            width: 50%;
+        }
+        
+        .nutrients-table td:nth-child(2),
+        .nutrients-table td:nth-child(3) {
+            text-align: right;
+            width: 25%;
+        }
+        
+        .nutrients-table tr.highlight td {
+            background-color: #fffacd;
+            font-weight: bold;
+        }
+        
+        .nutrients-table tr.sub-item td:first-child {
+            padding-left: 20px;
+            font-style: italic;
+        }
+        
+        .ingredients-section {
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+            padding: 10px 0;
+            margin: 15px 0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .ingredients-section strong {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .ingredients-section .contains {
+            margin-top: 8px;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .warnings-section {
+            background-color: #ffebee;
+            border: 2px solid #d32f2f;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .warnings-title {
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .warning-item {
+            font-size: 12px;
+            margin: 4px 0;
+            color: #000;
+        }
+        
+        .warning-item:before {
+            content: "⚠ ";
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+        }
+        
+        .qr-section {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px dashed #999;
+            border-radius: 3px;
+        }
+        
+        .qr-section p {
+            font-size: 11px;
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+            }
+            .label-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="label-container">
+        <div class="header">
+            <div class="product-name">🥜 Sevillanos de Piñón</div>
+            <div class="nutrition-facts">INFORMACIÓN NUTRIMENTAL</div>
+        </div>
+        
+        <div class="serving-info">
+            <strong>Tamaño de la porción:</strong> 20 g (1 pieza)<br>
+            <strong>Porciones por envase:</strong> 36<br>
+            <strong>Contenido energético por envase:</strong> 3,600 kcal (15,120 kJ)
+        </div>
+        
+        <table class="nutrients-table">
+            <tr>
+                <td>Nutriente</td>
+                <td>Por 100 g</td>
+                <td>Por porción</td>
+            </tr>
+            <tr class="highlight">
+                <td>Contenido energético</td>
+                <td>502 kcal (2,100 kJ)</td>
+                <td>100 kcal (420 kJ)</td>
+            </tr>
+            <tr>
+                <td>Proteínas</td>
+                <td>5.3 g</td>
+                <td>1.1 g</td>
+            </tr>
+            <tr class="highlight">
+                <td>Grasas Totales</td>
+                <td>26.4 g</td>
+                <td>5.3 g</td>
+            </tr>
+            <tr class="sub-item">
+                <td>Grasas Saturadas</td>
+                <td>11.2 g</td>
+                <td>2.2 g</td>
+            </tr>
+            <tr class="sub-item">
+                <td>Grasas Trans</td>
+                <td>0.0 mg</td>
+                <td>0.0 mg</td>
+            </tr>
+            <tr class="highlight">
+                <td>Carbohidratos Disponibles</td>
+                <td>61.1 g</td>
+                <td>12.2 g</td>
+            </tr>
+            <tr class="sub-item">
+                <td>Azúcares Totales</td>
+                <td>27.0 g</td>
+                <td>5.4 g</td>
+            </tr>
+            <tr class="sub-item highlight">
+                <td>Azúcares Añadidos</td>
+                <td>27.0 g</td>
+                <td>5.4 g</td>
+            </tr>
+            <tr>
+                <td>Fibra Dietética</td>
+                <td>1.3 g</td>
+                <td>0.3 g</td>
+            </tr>
+            <tr class="highlight">
+                <td>Sodio</td>
+                <td>110 mg</td>
+                <td>22 mg</td>
+            </tr>
+        </table>
+        
+        <div class="ingredients-section">
+            <strong>INGREDIENTES</strong>
+            Harina de trigo, manteca vegetal, azúcar estándar, azúcar glass, polvo para hornear, saborizante y colorante artificial (Concentrado sabor piñón [contiene Amarillo 5 y Rojo 40]).
+            <div class="contains">
+                ⚠ CONTIENE: Trigo (Gluten)
+            </div>
+        </div>
+        
+        <div class="warnings-section">
+            <div class="warnings-title">SELLOS DE ADVERTENCIA (NOM-051 MÉXICO)</div>
+            <div class="warning-item">EXCESO CALORÍAS</div>
+            <div class="warning-item">EXCESO GRASAS SATURADAS</div>
+            <div class="warning-item">EXCESO AZÚCARES</div>
+        </div>
+        
+        <div class="qr-section">
+            <p>📱 Escanea este código QR para verificar la información nutrimental</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://github.com/csarielscontacto-commits/Csariel-s-Digital-Assets-/blob/main/nutrition/sevillanos-pinon-label.html" alt="Código QR" style="max-width: 200px; height: auto;">
+        </div>
+        
+        <div class="footer">
+            Etiqueta nutrimental registrada en GitHub | Última actualización: 2026-06-14
+        </div>
+    </div>
+</body>
+</html>
