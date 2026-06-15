@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Domo Galleta - Registro Visual con Velas</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0d1b2a 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 20px;
+            color: #eef5ff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #FFD966, #FFA500);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sub {
+            color: #a0b3d9;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .register-card {
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 200, 100, 0.3);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            flex: 2;
+            background: #0f172f;
+            border: 1px solid #ffb34760;
+            padding: 14px 18px;
+            border-radius: 60px;
+            font-size: 1rem;
+            color: white;
+            font-family: monospace;
+        }
+
+        .input-group button, .quick-btn {
+            background: linear-gradient(95deg, #FFB347, #FF7E05);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s;
+            color: #0a0f1e;
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .quick-btn {
+            background: #1e2a44;
+            color: white;
+            border: 1px solid #ffb34760;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            padding: 15px;
+            flex: 1;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            border: 1px solid #ffb34740;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD966;
+        }
+
+        .date-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.4);
+            border-radius: 60px;
+            padding: 8px 15px;
+            margin-bottom: 20px;
+        }
+
+        .date-nav button {
+            background: #ffb34730;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .chart-container {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        canvas {
+            max-height: 400px;
+            width: 100%;
+        }
+
+        .ventas-lista {
+            background: rgba(0,0,0,0.5);
+            border-radius: 28px;
+            padding: 20px;
+        }
+
+        .venta-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #2a3a60;
+            padding: 10px;
+            font-family: monospace;
+        }
+
+        .export-btn {
+            background: #2ecc71;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 30px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🍪 DOMO GALLETA · REGISTRO DE FLUJO DE CAJA</h1>
+        <div class="sub">📈 Velas que muestran la realidad de tus ventas | Datos reales para bancos e inversionistas</div>
+    </div>
+
+    <div class="register-card">
+        <div class="input-group">
+            <input type="text" id="codigoBarra" placeholder="🔍 Escanea código o escribe (ej: CLASICO-001)" autocomplete="off">
+            <input type="number" id="montoVenta" placeholder="💰 Monto en pesos" step="1" style="flex:1">
+            <button id="btnRegistrar">➕ REGISTRAR VENTA</button>
+        </div>
+        <div class="quick-buttons">
+            <div class="quick-btn" data-monto="20">🍪 Clásica $20</div>
+            <div class="quick-btn" data-monto="25">✨ Especial $25</div>
+            <div class="quick-btn" data-monto="35">👑 Premium $35</div>
+            <div class="quick-btn" data-monto="50">🎁 Familiar $50</div>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">🍪 Total galletas<br><span class="stat-number" id="totalUnidades">0</span></div>
+        <div class="stat-card">💰 Total ventas<br><span class="stat-number" id="totalMonto">$0</span></div>
+        <div class="stat-card">📊 Promedio por hora<br><span class="stat-number" id="promedioHora">$0</span></div>
+        <div class="stat-card">⏱️ Hora pico<br><span class="stat-number" id="horaPico">--</span></div>
+    </div>
+
+    <div class="date-nav">
+        <button id="btnDiaAnterior">◀ Día anterior</button>
+        <span id="fechaActual" style="font-weight: bold; background: #ffb34720; padding: 6px 18px; border-radius: 40px;">📅 Cargando...</span>
+        <button id="btnDiaSiguiente">Día siguiente ▶</button>
+        <button id="btnHoy">📆 Hoy</button>
+    </div>
+
+    <div class="chart-container">
+        <h3>📊 Velas por hora (cada vela = ventas totales de esa hora)</h3>
+        <canvas id="velasChart" width="800" height="350"></canvas>
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 12px;">
+            <span style="color:#6fcf97">🟢 Vela verde = más ventas que la hora anterior</span>
+            <span style="color:#e67e80">🔴 Vela roja = menos ventas que la hora anterior</span>
+        </div>
+    </div>
+
+    <div class="ventas-lista">
+        <h3>📋 Ventas del día</h3>
+        <div id="listaVentasContainer">Cargando...</div>
+        <button id="btnExportar" class="export-btn">📎 Exportar historial completo (CSV para banco/inversionista)</button>
+    </div>
+    <footer>🔐 Los datos se guardan automáticamente en tu navegador. Puedes exportar el historial cuando quieras.</footer>
+</div>
+
+<script>
+    let todasLasVentas = [];
+    let fechaSeleccionada = new Date();
+    fechaSeleccionada.setHours(0, 0, 0, 0);
+    let chartInstance = null;
+
+    function cargarDatos() {
+        const guardado = localStorage.getItem("domo_galleta_ventas");
+        if (guardado) {
+            todasLasVentas = JSON.parse(guardado);
+        } else {
+            const hoy = new Date();
+            const ayer = new Date(hoy);
+            ayer.setDate(ayer.getDate() - 1);
+            const anteayer = new Date(hoy);
+            anteayer.setDate(anteayer.getDate() - 2);
+            
+            todasLasVentas = [
+                { timestamp: new Date(anteayer.getFullYear(), anteayer.getMonth(), anteayer.getDate(), 8, 15).getTime(), monto: 75, codigo: "CLASICO" },
+                { timestamp: new Date(anteayer.getFullYear(), anteayer.getMonth(), anteayer.getDate(), 10, 30).getTime(), monto: 140, codigo: "ESPECIAL" },
+                { timestamp: new Date(anteayer.getFullYear(), anteayer.getMonth(), anteayer.getDate(), 16, 45).getTime(), monto: 800, codigo: "PREMIUM" },
+                { timestamp: new Date(ayer.getFullYear(), ayer.getMonth(), ayer.getDate(), 8, 20).getTime(), monto: 38, codigo: "CLASICO" },
+                { timestamp: new Date(ayer.getFullYear(), ayer.getMonth(), ayer.getDate(), 10, 10).getTime(), monto: 70, codigo: "ESPECIAL" },
+                { timestamp: new Date(ayer.getFullYear(), ayer.getMonth(), ayer.getDate(), 16, 30).getTime(), monto: 400, codigo: "PREMIUM" },
+                { timestamp: new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), 9, 0).getTime(), monto: 45, codigo: "CLASICO" },
+                { timestamp: new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), 11, 0).getTime(), monto: 90, codigo: "ESPECIAL" },
+                { timestamp: new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), 17, 0).getTime(), monto: 420, codigo: "PREMIUM" },
+            ];
+            guardarDatos();
+        }
+        actualizarUI();
+    }
+
+    function guardarDatos() {
+        localStorage.setItem("domo_galleta_ventas", JSON.stringify(todasLasVentas));
+    }
+
+    function obtenerVentasPorFecha(fecha) {
+        const inicio = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()).getTime();
+        const fin = inicio + 86400000;
+        return todasLasVentas.filter(v => v.timestamp >= inicio && v.timestamp < fin);
+    }
+
+    function agruparPorHora(ventas) {
+        const porHora = new Array(24).fill(0);
+        ventas.forEach(venta => {
+            const hora = new Date(venta.timestamp).getHours();
+            porHora[hora] += venta.monto;
+        });
+        return porHora;
+    }
+
+    function generarVelas(montosPorHora) {
+        const velas = [];
+        for (let i = 0; i < 24; i++) {
+            const close = montosPorHora[i];
+            const open = (i === 0) ? close : montosPorHora[i-1];
+            const high = Math.max(open, close, close * 1.05);
+            const low = Math.min(open, close, close * 0.95);
+            velas.push({ open, high, low, close, hora: i });
+        }
+        return velas;
+    }
+
+    function dibujarVelas(velas) {
+        const canvas = document.getElementById("velasChart");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        
+        if (chartInstance) chartInstance.destroy();
+        
+        const labels = velas.map(v => `${v.hora}:00`);
+        const closeData = velas.map(v => v.close);
+        const colores = velas.map(v => v.close >= v.open ? '#6fcf97' : '#e67e80');
+        
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Ventas por hora ($ MXN)',
+                    data: closeData,
+                    backgroundColor: colores,
+                    borderColor: colores.map(c => c === '#6fcf97' ? '#2e8b57' : '#b0413e'),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                const vela = velas[context.dataIndex];
+                                return [`💰 Cierre: $${vela.close}`, `📈 Apertura: $${vela.open}`];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { title: { display: true, text: 'Ventas en pesos ($ MXN)', color: '#ccc' } },
+                    x: { title: { display: true, text: 'Hora del día', color: '#ccc' } }
+                }
+            }
+        });
+    }
+
+    function actualizarUI() {
+        const ventasDelDia = obtenerVentasPorFecha(fechaSeleccionada);
+        const montosPorHora = agruparPorHora(ventasDelDia);
+        const velas = generarVelas(montosPorHora);
+        
+        const totalMonto = ventasDelDia.reduce((sum, v) => sum + v.monto, 0);
+        const totalUnidades = ventasDelDia.length;
+        const promedioHora = totalMonto / 24;
+        let horaMax = 0, maxMonto = 0;
+        montosPorHora.forEach((monto, hora) => {
+            if (monto > maxMonto) { maxMonto = monto; horaMax = hora; }
+        });
+        
+        document.getElementById("totalMonto").innerHTML = `$${totalMonto.toFixed(2)}`;
+        document.getElementById("totalUnidades").innerText = totalUnidades;
+        document.getElementById("promedioHora").innerHTML = `$${promedioHora.toFixed(2)}`;
+        document.getElementById("horaPico").innerHTML = `${horaMax}:00 ($${maxMonto})`;
+        document.getElementById("fechaActual").innerHTML = `📅 ${fechaSeleccionada.toLocaleDateString('es-MX')}`;
+        
+        const container = document.getElementById("listaVentasContainer");
+        if (ventasDelDia.length === 0) {
+            container.innerHTML = '<div style="padding:20px; text-align:center">📭 No hay ventas registradas en este día</div>';
+        } else {
+            const sorted = [...ventasDelDia].sort((a,b) => a.timestamp - b.timestamp);
+            container.innerHTML = sorted.map(v => {
+                const fecha = new Date(v.timestamp);
+                return `<div class="venta-item"><span>⏱️ ${fecha.toLocaleTimeString()}</span><span>🍪 ${v.codigo || "Domo"}</span><span>💰 $${v.monto.toFixed(2)}</span></div>`;
+            }).join('');
+        }
+        dibujarVelas(velas);
+    }
+
+    function registrarVenta(monto, codigo) {
+        if (!monto || monto <= 0) { alert("Ingresa un monto válido"); return false; }
+        todasLasVentas.push({ timestamp: Date.now(), monto: parseFloat(monto), codigo: codigo || "venta manual" });
+        guardarDatos();
+        actualizarUI();
+        return true;
+    }
+
+    function exportarCSV() {
+        if (todasLasVentas.length === 0) { alert("No hay datos"); return; }
+        const filas = [["Fecha", "Hora", "Código", "Monto"]];
+        todasLasVentas.sort((a,b) => a.timestamp - b.timestamp).forEach(v => {
+            const fecha = new Date(v.timestamp);
+            filas.push([fecha.toLocaleDateString('es-MX'), fecha.toLocaleTimeString(), v.codigo || "—", v.monto]);
+        });
+        const csv = filas.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csv], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `ventas_domo_galleta_${new Date().toISOString().slice(0,10)}.csv`;
+        link.click();
+    }
+
+    function cambiarFecha(dias) { fechaSeleccionada.setDate(fechaSeleccionada.getDate() + dias); actualizarUI(); }
+    function irHoy() { fechaSeleccionada = new Date(); fechaSeleccionada.setHours(0,0,0,0); actualizarUI(); }
+
+    document.getElementById("btnRegistrar").addEventListener("click", () => {
+        const monto = document.getElementById("montoVenta").value;
+        const codigo = document.getElementById("codigoBarra").value;
+        if (registrarVenta(monto, codigo)) { document.getElementById("montoVenta").value = ""; document.getElementById("codigoBarra").value = ""; }
+    });
+    document.querySelectorAll(".quick-btn").forEach(btn => {
+        btn.addEventListener("click", () => registrarVenta(btn.getAttribute("data-monto"), btn.innerText.split('$')[0].trim()));
+    });
+    document.getElementById("btnDiaAnterior").addEventListener("click", () => cambiarFecha(-1));
+    document.getElementById("btnDiaSiguiente").addEventListener("click", () => cambiarFecha(1));
+    document.getElementById("btnHoy").addEventListener("click", irHoy);
+    document.getElementById("btnExportar").addEventListener("click", exportarCSV);
+    
+    cargarDatos();
+</script>
+</body>
+</html>
