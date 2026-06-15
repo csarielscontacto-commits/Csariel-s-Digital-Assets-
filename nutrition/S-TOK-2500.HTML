@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden de Compra Anticipada - Grupo Industrial Sariel's</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 550px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed #475569;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 20px;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .header p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            background-color: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+        .meta-item label {
+            display: block;
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        .meta-item span {
+            font-size: 14px;
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+        .status-active {
+            color: #4ade80 !important;
+        }
+        
+        /* Contenedor de la gráfica de la bolsa */
+        .chart-box {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .chart-title {
+            font-size: 12px;
+            color: #38bdf8;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .details-box {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 8px;
+        }
+        .details-row:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .alert-box {
+            background-color: #451a03;
+            border: 1px solid #78350f;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 12px;
+            color: #fcd34d;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+        
+        /* Botón conectado directo a tu WhatsApp empresarial */
+        .btn-action {
+            display: block;
+            width: 100%;
+            background-color: #25d366;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: background-color 0.3s ease;
+        }
+        .btn-action:hover {
+            background-color: #128c7e;
+        }
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #64748b;
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Control de Suministro Industrial</h1>
+        <p>Grupo Industrial Sariel's — Planta de Horneo Automatizada</p>
+    </div>
+
+    <div class="meta-grid">
+        <div class="meta-item">
+            <label>Folio de Certificado</label>
+            <span>#VFA-2500-PROP</span>
+        </div>
+        <div class="meta-item">
+            <label>Estatus de Línea</label>
+            <span class="status-active">Asignado (Rollover)</span>
+        </div>
+        <div class="meta-item">
+            <label>Valor de Adquisición</label>
+            <span>$2,500.00 MXN</span>
+        </div>
+        <div class="meta-item">
+            <label>Resguardo Mínimo</label>
+            <span>30 Días Naturales</span>
+        </div>
+    </div>
+
+    <div class="chart-box">
+        <div class="chart-title">📊 Histórico de Operación y Estabilidad (Velocidad de Planta)</div>
+        <div id="candle-chart"></div>
+    </div>
+
+    <div class="section-title">Especificaciones del Contrato Comercial</div>
+    <div class="details-box">
+        <div class="details-row">
+            <span>Concepto:</span>
+            <strong>Compra Anticipada de Lote de Producción</strong>
+        </div>
+        <div class="details-row">
+            <span>Rendimiento Base (Permanencia):</span>
+            <span style="color: #4ade80;">17% Anual Equivalente</span>
+        </div>
+        <div class="details-row">
+            <span>Cancelación Voluntaria (Cliente):</span>
+            <span style="color: #f87171;">Bonificación fija en ese ciclo</span>
+        </div>
+        <div class="details-row">
+            <span>Derecho de Cesión (NFT Transfer):</span>
+            <strong>Regalía del 10% en mercado secundario</strong>
+        </div>
+    </div>
+
+    <div class="section-title">Políticas de Liquidación y Retiro</div>
+    <div class="alert-box">
+        <strong>Ventana de Solicitud Obligatoria:</strong> Las solicitudes de devolución de capital o liquidación de órdenes se procesan estrictamente del 20 al 25 de cada mes.<br><br>
+        <strong>Tiempo de Dispersión:</strong> Al estar vinculado a inventario físico y logística de distribución (Amazon / Mercado Libre), el fondo requiere 24 horas bancarias de espera tras la validación para proteger el flujo de caja operativo.
+    </div>
+
+    <a href="https://wa.me/522215747036?text=Hola%20Alfredo,%20le%20í%20las%20pol%C3%ADticas%20del%20Contrato%20Comercial%20y%20quiero%20adquirir/renovar%20el%20S-TOK%20de%20$2,500%20MXN%20para%20la%20Planta%20de%20Horneo." target="_blank" class="btn-action">
+        📲 Aceptar Contrato y Solicitar Asignación
+    </a>
+
+    <div class="footer">
+        <p>Activo digital verificado en entorno descentralizado Polygon.</p>
+        <p style="margin-top: 5px;">Puebla, México — Todos los derechos reservados.</p>
+    </div>
+</div>
+
+<script>
+    // Configuración de los datos de las velas tipo bolsa
+    var options = {
+        series: [{
+            data: [
+                { x: new Date(2026, 1, 1), y: [2400, 2450, 2380, 2420] },
+                { x: new Date(2026, 2, 1), y: [2420, 2480, 2410, 2460] },
+                { x: new Date(2026, 3, 1), y: [2460, 2510, 2440, 2490] },
+                { x: new Date(2026, 4, 1), y: [2490, 2550, 2470, 2520] },
+                { x: new Date(2026, 5, 1), y: [2520, 2600, 2500, 2580] }
+            ]
+        }],
+        chart: {
+            type: 'candlestick',
+            height: 200,
+            toolbar: { show: false }
+        },
+        theme: { mode: 'dark' },
+        grid: { borderColor: '#334155' },
+        xaxis: {
+            type: 'datetime',
+            labels: { style: { colors: '#94a3b8' } }
+        },
+        yaxis: {
+            tooltip: { enabled: true },
+            labels: { style: { colors: '#94a3b8' } }
+        },
+        plotOptions: {
+            candlestick: {
+                colors: {
+                    upward: '#4ade80',
+                    downward: '#f87171'
+                }
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#candle-chart"), options);
+    chart.render();
+</script>
+
+</body>
+</html>
+
